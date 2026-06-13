@@ -3,7 +3,7 @@
   "name": "QuoteKeep — Save Highlights",
   "version": "1.0.0",
   "description": "Select text on any page and save it (with auto English translation) to your local QuoteKeep dashboard.",
-  "permissions": ["contextMenus", "activeTab", "scripting", "notifications"],
+  "permissions": ["tabs", "contextMenus", "activeTab", "scripting", "notifications"],
   "host_permissions": ["http://localhost:8000/*"],
   "background": {
     "service_worker": "background.js"
