@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>QuoteKeep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  :root {
+    --bg: #0e0f13;
+    --bg-card: #16181f;
+    --bg-card-hover: #1b1e27;
+    --border: #262932;
+    --text: #e7e5df;
+    --text-dim: #9a9890;
+    --text-faint: #5f5e58;
+    --accent: #8a9bff;
+    --rule: #2a2d36;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* selection highlight in our own reading app */
+  ::selection { background: rgba(138, 155, 255, 0.25); }
+
+  header.top {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 8px;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .brand h1 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .brand .count {
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin: 8px 0 0;
+  }
+
+  .toolbar {
+    max-width: 760px;
+    margin: 24px auto 0;
+    padding: 0 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .search {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search:focus { border-color: var(--accent); }
+  .search::placeholder { color: var(--text-faint); }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 120px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 30px 46px;
+    margin-bottom: 18px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .card:hover { background: var(--bg-card-hover); }
+
+  /* original quote — the typographic centerpiece */
+  .quote {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 21px;
+    line-height: 1.55;
+    letter-spacing: -0.003em;
+    margin: 0;
+    color: var(--text);
+  }
+  .quote::before { content: "\201C"; color: var(--text-faint); margin-right: 2px; }
+  .quote::after  { content: "\201D"; color: var(--text-faint); margin-left: 1px; }
+
+  /* English translation block, shown beneath foreign-language originals */
+  .translation {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+  .translation .label {
+    display: inline-block;
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 7px;
+  }
+
+  /* source attribution — bottom right, small and quiet */
+  .source {
+    position: absolute;
+    right: 18px;
+    bottom: 14px;
+    font-size: 11.5px;
+    color: var(--text-faint);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.15s;
+  }
+  .source:hover { color: var(--accent); }
+
+  .lang-tag {
+    position: absolute;
+    left: 30px;
+    top: 16px;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .card.translated { padding-top: 40px; }
+
+  /* delete affordance, appears on hover */
+  .del {
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    background: none;
+    border: none;
+    color: var(--text-faint);
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+    line-height: 1;
+    padding: 2px 6px;
+  }
+  .card:hover .del { opacity: 1; }
+  .del:hover { color: #ff7a7a; }
+
+  .empty, .error {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 15px;
+    padding: 80px 20px;
+    line-height: 1.7;
+  }
+  .empty code {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 13px;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <h1>QuoteKeep</h1>
+      <span class="count" id="count"></span>
+    </div>
+    <p class="subtitle">Everything you highlighted, distilled to text.</p>
+  </header>
+
+  <div class="toolbar">
+    <input id="search" class="search" type="text" placeholder="Search your quotes…" />
+  </div>
+
+  <main id="list">
+    <div class="empty">Loading…</div>
+  </main>
+
+<script>
+  const API = "http://localhost:8000/api/notes";
+  let allNotes = [];
+
+  const listEl = document.getElementById("list");
+  const countEl = document.getElementById("count");
+  const searchEl = document.getElementById("search");
+
+  function esc(s) {
+    const d = document.createElement("div");
+    d.textContent = s == null ? "" : s;
+    return d.innerHTML;
+  }
+
+  function render(notes) {
+    if (!notes.length) {
+      listEl.innerHTML = allNotes.length
+        ? `<div class="empty">No quotes match your search.</div>`
+        : `<div class="empty">No quotes yet.<br>Highlight text on any page, right-click → <em>Save to QuoteKeep</em> (or press <code>Ctrl+Shift+S</code>).</div>`;
+      return;
+    }
+
+    listEl.innerHTML = notes
+      .map((n) => {
+        const translated = n.translation && n.lang !== "en";
+        const sourceHtml = n.source
+          ? `<a class="source" href="${esc(n.url || "#")}" target="_blank" rel="noopener noreferrer" title="${esc(n.url || "")}">${esc(n.source)}</a>`
+          : "";
+        const langTag = translated ? `<span class="lang-tag">${esc(n.lang_name)}</span>` : "";
+        const translationHtml = translated
+          ? `<div class="translation"><span class="label">English</span>${esc(n.translation)}</div>`
+          : "";
+        return `
+          <article class="card ${translated ? "translated" : ""}">
+            ${langTag}
+            <button class="del" data-id="${esc(n.id)}" title="Delete">&times;</button>
+            <p class="quote">${esc(n.text)}</p>
+            ${translationHtml}
+            ${sourceHtml}
+          </article>`;
+      })
+      .join("");
+
+    listEl.querySelectorAll(".del").forEach((btn) => {
+      btn.addEventListener("click", () => del(btn.dataset.id));
+    });
+  }
+
+  function applyFilter() {
+    const q = searchEl.value.trim().toLowerCase();
+    if (!q) return render(allNotes);
+    const filtered = allNotes.filter((n) =>
+      [n.text, n.translation, n.source, n.title]
+        .filter(Boolean)
+        .some((f) => f.toLowerCase().includes(q))
+    );
+    render(filtered);
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(API);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      allNotes = await res.json();
+      countEl.textContent = allNotes.length
+        ? `${allNotes.length} quote${allNotes.length === 1 ? "" : "s"}`
+        : "";
+      applyFilter();
+    } catch (err) {
+      listEl.innerHTML = `<div class="error">Couldn't reach the backend.<br>Make sure it's running on <code>localhost:8000</code>.</div>`;
+    }
+  }
+
+  async function del(id) {
+    try {
+      await fetch(`${API}/${id}`, { method: "DELETE" });
+      allNotes = allNotes.filter((n) => n.id !== id);
+      countEl.textContent = allNotes.length ? `${allNotes.length} quotes` : "";
+      applyFilter();
+    } catch (_) {}
+  }
+
+  searchEl.addEventListener("input", applyFilter);
+  load();
+  // Refresh when the tab regains focus, so newly-saved quotes appear.
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) load();
+  });
+</script>
+</body>
+</html>

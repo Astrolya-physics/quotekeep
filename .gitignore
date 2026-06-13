@@ -1,0 +1,9 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+backend/notes.json
+backend/notes.json.tmp
+.DS_Store
+.vscode/
+.idea/

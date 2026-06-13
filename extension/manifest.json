@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "QuoteKeep — Save Highlights",
+  "version": "1.0.0",
+  "description": "Select text on any page and save it (with auto English translation) to your local QuoteKeep dashboard.",
+  "permissions": ["contextMenus", "activeTab", "scripting", "notifications"],
+  "host_permissions": ["http://localhost:8000/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "commands": {
+    "save-selection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Save the currently selected text to QuoteKeep"
+    }
+  },
+  "icons": {}
+}
