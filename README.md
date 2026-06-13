@@ -109,3 +109,57 @@ empty QuoteKeep dashboard. (API docs are at http://localhost:8000/docs.)
 | GET    | `/health`         | Health check + note count                |
 | GET    | `/`               | The reading dashboard                    |
 ```
+
+
+
+## About this project
+
+QuoteKeep was designed and built collaboratively with Claude (Anthropic's Cowork mode).
+The architecture, extension, backend, and reading interface were produced from the
+single project brief below.
+
+### Original prompt
+
+> You are an expert Full-Stack Developer and UX/UI Designer. I want you to design and code a web-based "smart note-taking and reading" application for me.
+>
+> **Project Summary:** I want a system that captures and stores the texts I highlight while browsing websites, similar to taking a screenshot but strictly in "text" format. My goal is absolutely not to open or load the original websites when reading these notes; I just want to read the quotes in a clean and minimalist interface that I host myself.
+>
+> **Desired Key Features:**
+>
+> 1. **Text Capture (Browser Extension):** When I select a sentence or paragraph on any web page, I should be able to instantly save this text to my database via a right-click context menu or a keyboard shortcut.
+> 2. **Smart Translation Support:** The notes I collect will mostly be in English. However, I will also select texts in Russian, German, or other languages. The system must automatically detect the language of the saved text. If the text is not in English, it should save both the original text and its English translation to the database (via DeepL, Google Translate, or a similar API).
+> 3. **Reading Interface (Dashboard):** I want a single-page interface that displays all saved quotes in clean, distraction-free cards. In this interface, notes in foreign languages should be designed to show the original text with the English translation directly underneath it.
+> 4. **Source Attribution:** In the bottom right corner of every quote card in the interface, the name or URL of the website from which the text was taken must be written elegantly in a small font. It shouldn't redirect me to that site unless I explicitly click on it.
+>
+> **My Expectations From You:**
+>
+> - **Architecture Recommendation:** Determine the most suitable tech stack for this job (e.g., a Chrome Extension for text capture + a lightweight Python/FastAPI-based backend for translation and database management).
+> - **Extension Codes:** Write the `manifest.json`, the `content.js` to capture the text, and the `background.js` for background processes for Chrome (or a Chromium-based browser).
+> - **Backend & Translation Logic:** Create the core API routes that receive the selected text, detect its language, translate it via an API if necessary, and save it in JSON format.
+> - **Frontend Codes:** Provide the HTML/CSS and basic JavaScript for the minimalist quote-reading interface, with a dark mode theme and a typography-focused structure.
+> - **Step-by-Step Setup:** Explain step-by-step how to integrate and run all components on localhost.
+
+About this project
+QuoteKeep was designed and built collaboratively with Claude (Anthropic's Cowork mode).
+The architecture, browser extension, FastAPI backend, and reading interface were all
+produced from the single project brief below.
+
+### Original prompt
+
+You are an expert Full-Stack Developer and UX/UI Designer. I want you to design and code a web-based "smart note-taking and reading" application for me.
+
+Project Summary: I want a system that captures and stores the texts I highlight while browsing websites, similar to taking a screenshot but strictly in "text" format. My goal is absolutely not to open or load the original websites when reading these notes; I just want to read the quotes in a clean and minimalist interface that I host myself.
+
+
+Desired Key Features:
+1. Text Capture (Browser Extension): When I select a sentence or paragraph on any web page, I should be able to instantly save this text to my database via a right-click context menu or a keyboard shortcut.
+
+2. Smart Translation Support: The notes I collect will mostly be in English. However, I will also select texts in Russian, German, or other languages. The system must automatically detect the language of the saved text. If the text is not in English, it should save both the original text and its English translation to the database (via DeepL, Google Translate, or a similar API).
+
+3. Reading Interface (Dashboard): I want a single-page interface that displays all saved quotes in clean, distraction-free cards. In this interface, notes in foreign languages should show the original text with the English translation directly underneath it.
+
+4. Source Attribution: In the bottom right corner of every quote card, the name or URL of the website the text was taken from must be written elegantly in a small font. It shouldn't redirect me to that site unless I explicitly click on it.
+
+
+Expectations: an architecture recommendation, the extension code (manifest.json, content.js, background.js), the backend and translation logic with API routes that detect language and save as JSON, the frontend HTML/CSS/JS for a minimalist dark-mode reading interface, and step-by-step localhost setup.
+
